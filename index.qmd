@@ -192,7 +192,7 @@ There are a few additional resources that you may find useful for getting starte
 The latest release of arrow can be installed from CRAN. In most cases installing the latest release should work without requiring any additional system dependencies, especially if you are using Windows or macOS.
 
 ```{r}
-install.packages("arrow")
+# install.packages("arrow")
 ```
 
 If you are having trouble installing from CRAN, then we offer two alternative install options for grabbing the latest arrow release. First, R-universe provides pre-compiled binaries for the most commonly used operating systems.
@@ -208,13 +208,13 @@ library(arrow, warn.conflicts = FALSE)
 library(dplyr, warn.conflicts = FALSE)
 
 starwars
-write_parquet(starwars, 'starwars.parquet')
+write_parquet(starwars, 'outputs/starwars.parquet')
 
 ```
 
 ```{r}
-sw_frame <- read_parquet('starwars.parquet')
-sw_table <- read_parquet('starwars.parquet', as_data_frame = FALSE)
+sw_frame <- read_parquet('outputs/starwars.parquet')
+sw_table <- read_parquet('outputs/starwars.parquet', as_data_frame = FALSE)
 sw_table
 ```
 #### Multi-file data sets
@@ -230,7 +230,7 @@ random_data <- data.frame(
 ```
 
 ```{r}
-dataset_path <- "random_data"
+dataset_path <- "outputs/random_data"
 ```
 
 ```{r}
@@ -266,6 +266,14 @@ dset %>%
 
 
 ### example from real life with ebird pts?
+
+```{r}
+# x <- arrow::read_delim_arrow("C:/Users/Bruna.Arbo-Meneses/OneDrive - BirdLife International/data_bruna/australia/ebird/ebd_filtered_aus_2025.txt",
+#                        delim = "\t", quote = "")
+
+```
+
+
 
 ## geoparquet - sfarrow
 
