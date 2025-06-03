@@ -24,99 +24,110 @@ dpi: 500
 
 ## Welcome to the fantastic world of Parquet
 
-<!-- wikipedia -->
-Apache Parquet is a free and open-source column-oriented data storage format in the Apache Hadoop ecosystem. It is similar to RCFile and ORC, the other columnar-storage file formats in Hadoop, and is compatible with most of the data processing frameworks around Hadoop. It provides efficient data compression and encoding schemes with enhanced performance to handle complex data in bulk. [fonte](https://en.wikipedia.org/wiki/Apache_Parquet){target="_blank"}
-<!-- wikipedia -->
+### What is it?
 
-<!-- https://parquet.apache.org/ -->
-Apache Parquet is an open source, column-oriented data file format designed for efficient data storage and retrieval. It provides high performance compression and encoding schemes to handle complex data in bulk and is supported in many programming language and analytics tools.
-<!-- https://parquet.apache.org/ -->
+Apache Parquet is an open source, column-oriented data file format designed for efficient data storage and retrieval. It provides high performance compression and encoding schemes to handle complex data in bulk and is supported in many programming language and analytics tools^[https://parquet.apache.org/docs/overview/].
 
-<!-- https://coralogix.com/blog/parquet-file-format/ -->
-What is the Parquet file format?
+<!-- https://www.upsolver.com/blog/apache-parquet-why-use -->
 
-Parquet file format is a structured data format that requires less storage space and offers high performance, compared to other unstructured data formats such as CSV or JSON. 
 
-Parquet files support highly efficient compression and encoding schemes, resulting in a file optimized for query performance and minimizing I/O operations. Parquet file formats maximize the effectiveness of querying data using serverless technologies like Amazon Athena, BigQuery, and Azure Data Lakes. For example, Apache Parquet, licensed under the Apache software foundation, is built from scratch using the Google shredding and assembly algorithm, and is available to all. 
+<!-- <!-- https://www.databricks.com/glossary/what-is-parquet --> -->
 
-Parquet file format characteristics 
+<!-- ### What is Parquet? -->
 
-The Parquet file format stands out for its special qualities that change how data is structured, compressed and used. Let’s deep dive into the main features that make Parquet different from regular formats.
+<!-- Apache Parquet is an open source, column-oriented data file format designed for efficient data storage and retrieval. It provides efficient data compression and encoding schemes with enhanced performance to handle complex data in bulk. Apache Parquet is designed to be a common interchange format for both batch and interactive workloads. It is similar to other columnar-storage file formats available in Hadoop, namely RCFile and ORC. -->
 
-    Column-based format
 
-The key difference between a CSV and Parquet file format is how each one is organized. A Parquet file format is structured by row, with every separate column independently accessible from the rest. 
+#### Basic Definition
 
-Since the data in each column is expected to be of the same type, the parquet file format makes encoding, compressing and optimizing data storage possible.
+Apache Parquet is a file format designed to support fast data processing for complex data, with several notable characteristics:
 
-    Binary format
+1. **Columnar:** Unlike row-based formats such as CSV or Avro, Apache Parquet is column-oriented – meaning the values of each table column are stored next to each other, rather than those of each record:
 
-Parquet file formats store data in binary format, which reduces the overhead of textual representation. It’s important to note that Parquet files are not stored in plain text, thus cannot be opened in a text editor.
+![](https://www.upsolver.com/wp-content/uploads/2020/05/Screen-Shot-2020-05-26-at-17.52.58.png)
 
-    Data compression
+The key difference between a CSV and Parquet file format is how each one is organized. A Parquet file format is structured by row, with every separate column independently accessible from the rest. Since the data in each column is expected to be of the same type, the parquet file format makes encoding, compressing and optimizing data storage possible.
 
-Parquet file formats support various compression algorithms, such as Snappy, Gzip, and LZ4, resulting in smaller file sizes, compared to uncompressed formats like CSV. You can expect a size reduction of nearly 75% for your data in Parquet files from other formats.
+2. **Open-source:** Parquet is free to use and open source under the Apache Hadoop license, and is compatible with most Hadoop data processing frameworks. To quote the [project website](https://parquet.apache.org/){target="_blank"}, "Apache Parquet is… available to any project… regardless of the choice of data processing framework, data model, or programming language."
+3. **Self-describing:** In addition to data, a Parquet file contains metadata including schema and structure. Each file stores both the data and the standards used for accessing each record – making it easier to decouple services that write, store, and read Parquet files.
+4. **Binary format:** Parquet file formats store data in binary format, which reduces the overhead of textual representation. It's important to note that Parquet files are not stored in plain text, thus cannot be opened in a text editor.
 
-    Embedded metadata
+#### Advantages of Parquet Columnar Storage – Why Should You Use It?
 
-Parquet file formats include metadata that provide information about the schema, compression settings, number of values, location of columns, minimum value, maximum value, number of row groups and type of encoding. 
+The above characteristics of the Apache Parquet file format create several distinct benefits when it comes to storing and analysing large volumes of data. 
 
-Embedded metadata helps in efficiently reading and processing the data. Any program that’s used to read the data can also access the metadata to determine what type of data is expected to be found in a given column.
+::: {.panel-tabset}
 
-    Splittable and parallel processing
+## Compression
 
-Parquet file formats are designed to be splittable, meaning they can be divided into smaller chunks for parallel processing in distributed computing frameworks like Apache Hadoop and Apache Spark.
-Parquet file format vs CSV
+File compression is the act of taking a file and making it smaller. In Parquet, compression is performed column by column and it is built to support flexible compression options and extendable encoding schemas per data type – e.g., different encoding can be used for compressing integer and string data.
 
-While CSV is widely used in major organizations, CSV and Parquet file formats are suitable for different use cases. Let’s look at the differences between these two specific formats in order to help you choose a data storage format.
+Parquet data can be compressed using these encoding methods:
 
-    Storage efficiency
+* **Dictionary encoding:** this is enabled automatically and dynamically for data with a small number of unique values.
+* **Bit packing:** Storage of integers is usually done with dedicated 32 or 64 bits per integer. This allows more efficient storage of small integers.
+* **Run length encoding (RLE):** when the same value occurs multiple times, a single value is stored once along with the number of occurrences. Parquet implements a combined version of bit packing and RLE, in which the encoding switches based on which produces the best compression results.
 
-Parquet file format is a columnar storage format, which means that data for each column is stored together. The storage mechanism enables better compression and typically results in smaller file sizes compared to row-based formats.
+<!--     Data compression -->
 
-CSV is a row-based format, where each row is represented as a separate line in the file. The format does not offer compression, often resulting in larger file sizes.
+<!-- Parquet file formats support various compression algorithms, such as Snappy, Gzip, and LZ4, resulting in smaller file sizes, compared to uncompressed formats like CSV. You can expect a size reduction of nearly 75% for your data in Parquet files from other formats. -->
 
-    Query performance
+<!--     Embedded metadata -->
 
-CSVs need you to read the entire file to query just one column, which is highly inefficient.
+<!-- Parquet file formats include metadata that provide information about the schema, compression settings, number of values, location of columns, minimum value, maximum value, number of row groups and type of encoding.  -->
 
-On the other hand, Parquet’s columnar storage and efficient compression makes it well-suited for analytical queries that only need to access specific columns. This compression leads to faster query performance when dealing with large datasets. A  recent [survey by Green Shield Canada](https://posit.co/blog/speed-up-data-analytics-with-parquet-files/){target="_blank"} found that with the parquet file format, they were able to process and query data 1,500 times faster than with CSVs. 
+<!-- Embedded metadata helps in efficiently reading and processing the data. Any program that's used to read the data can also access the metadata to determine what type of data is expected to be found in a given column. -->
 
-    Schema evolution
+## Performance
 
-Parquet file format supports schema evolution by default, since it’s designed with the dynamic nature of computer systems in mind. The format allows you to add new columns of data without having to worry about your existing dataset. 
+As opposed to row-based file formats like CSV, Parquet is optimized for performance. When running queries on your Parquet-based file-system, you can focus only on the relevant data very quickly. Moreover, the amount of data scanned will be way smaller and will result in less I/O usage. To understand this, let's look a bit deeper into how Parquet files are structured.
 
-CSV files on the other hand, do not inherently support schema evolution, which can be a limitation if your data schema changes frequently.
+As we mentioned above, Parquet is a self-described format, so each file contains both data and metadata. Parquet files are composed of row groups, header and footer. Each row group contains data from the same columns. The same columns are stored together in each row group:
 
-    Compatibility and usability
+![](https://www.upsolver.com/wp-content/uploads/2020/05/Screen-Shot-2020-05-26-at-17.53.13.png)
+This structure is well-optimized both for fast query performance, as well as low I/O (minimizing the amount of data scanned). For example, if you have a table with 1000 columns, which you will usually only query using a small subset of columns. Using Parquet files will enable you to fetch only the required columns and their values, load those in memory and answer the query. If a row-based file format like CSV was used, the entire table would have to have been loaded in memory, resulting in increased I/O and worse performance.
 
-Parquet is designed for machines and not for humans. Using Parquet file format in your project may require additional libraries or converters for compatibility with some tools or systems.
+<!--     Splittable and parallel processing -->
 
-CSV is a simple and widely supported format that can be easily read and written by humans and almost any data processing tool or programming language, making it very versatile and accessible.
-<!-- https://coralogix.com/blog/parquet-file-format/ -->
+<!-- Parquet file formats are designed to be splittable, meaning they can be divided into smaller chunks for parallel processing in distributed computing frameworks like Apache Hadoop and Apache Spark. -->
+<!-- Parquet file format vs CSV -->
 
-<!-- https://www.databricks.com/glossary/what-is-parquet -->
+<!-- While CSV is widely used in major organizations, CSV and Parquet file formats are suitable for different use cases. Let's look at the differences between these two specific formats in order to help you choose a data storage format. -->
 
-### What is Parquet?
+<!--     Storage efficiency -->
 
-Apache Parquet is an open source, column-oriented data file format designed for efficient data storage and retrieval. It provides efficient data compression and encoding schemes with enhanced performance to handle complex data in bulk. Apache Parquet is designed to be a common interchange format for both batch and interactive workloads. It is similar to other columnar-storage file formats available in Hadoop, namely RCFile and ORC.
+<!-- Parquet file format is a columnar storage format, which means that data for each column is stored together. The storage mechanism enables better compression and typically results in smaller file sizes compared to row-based formats. -->
 
-### Characteristics of Parquet
+<!-- CSV is a row-based format, where each row is represented as a separate line in the file. The format does not offer compression, often resulting in larger file sizes. -->
 
-    Free and open source file format.
-    Language agnostic.
-    Column-based format - files are organized by column, rather than by row, which saves storage space and speeds up analytics queries.
-    Used for analytics (OLAP) use cases, typically in conjunction with traditional OLTP databases.
-    Highly efficient data compression and decompression.
-    Supports complex data types and advanced nested data structures.
+<!--     Query performance -->
 
-### Benefits of Parquet
+<!-- CSVs need you to read the entire file to query just one column, which is highly inefficient. -->
 
-    Good for storing big data of any kind (structured data tables, images, videos, documents).
-    Saves on cloud storage space by using highly efficient column-wise compression, and flexible encoding schemes for columns with different data types.
-    Increased data throughput and performance using techniques like data skipping, whereby queries that fetch specific column values need not read the entire row of data.
+<!-- On the other hand, Parquet's columnar storage and efficient compression makes it well-suited for analytical queries that only need to access specific columns. This compression leads to faster query performance when dealing with large datasets. A  recent [survey by Green Shield Canada](https://posit.co/blog/speed-up-data-analytics-with-parquet-files/){target="_blank"} found that with the parquet file format, they were able to process and query data 1,500 times faster than with CSVs.  -->
 
-Apache Parquet is implemented using the record-shredding and assembly algorithm, which accommodates the complex data structures that can be used to store the data. Parquet is optimized to work with complex data in bulk and features different ways for efficient data compression and encoding types. This approach is best especially for those queries that need to read certain columns from a large table. Parquet can only read the needed columns therefore greatly minimizing the IO.
+## Schema evolution
+
+When using columnar file formats like Parquet, users can start with a simple schema, and gradually add more columns to the schema as needed. In this way, users may end up with multiple Parquet files with different but mutually compatible schemas. In these cases, Parquet supports automatic schema merging among these files.
+
+<!--     Schema evolution -->
+
+<!-- Parquet file format supports schema evolution by default, since it's designed with the dynamic nature of computer systems in mind. The format allows you to add new columns of data without having to worry about your existing dataset.  -->
+
+<!-- CSV files on the other hand, do not inherently support schema evolution, which can be a limitation if your data schema changes frequently. -->
+
+:::
+
+## Column-Oriented vs Row-Based Storage for Analytic Querying
+
+Data is often generated and more easily conceptualized in rows. We are used to thinking in terms of Excel spreadsheets, where we can see all the data relevant to a specific record in one neat and organized row. However, for large-scale analytical querying, columnar storage comes with significant advantages with regards to cost and performance.
+
+Complex data such as logs and event streams would need to be represented as a table with hundreds or thousands of columns, and many millions of rows. Storing this table in a row based format such as CSV would mean:
+
+* Queries will take longer to run since more data needs to be scanned, rather than only querying the subset of columns we need to answer a query (which typically requires aggregating based on dimension or category)
+* Storage will be more costly since CSVs are not compressed as efficiently as Parquet
+
+Columnar formats provide better compression and improved performance out-of-the-box, and enable you to query data vertically – column by column. <!-- https://www.upsolver.com/blog/apache-parquet-why-use -->
 
 ### Advantages of Storing Data in a Columnar Format:
 
@@ -124,122 +135,13 @@ Apache Parquet is implemented using the record-shredding and assembly algorithm,
     Apache Parquet is built from the ground up. Hence it is able to support advanced nested data structures. The layout of Parquet data files is optimized for queries that process large volumes of data, in the gigabyte range for each individual file.
     Parquet is built to support flexible compression options and efficient encoding schemes. As the data type for each column is quite similar, the compression of each column is straightforward (which makes queries even faster). Data can be compressed by using one of the several codecs available; as a result, different data files can be compressed differently.
     Apache Parquet works best with interactive and serverless technologies like AWS Athena, Amazon Redshift Spectrum, Google BigQuery and Google Dataproc.
-
-### Difference Between Parquet and CSV
-
-CSV is a simple and common format that is used by many tools such as Excel, Google Sheets, and numerous others. Even though the CSV files are the default format for data processing pipelines it has some disadvantages:
-
-    Amazon Athena and Spectrum will charge based on the amount of data scanned per query.
-    Google and Amazon will charge you according to the amount of data stored on GS/S3.
-    Google Dataproc charges are time-based.
-
-Parquet has helped its users reduce storage requirements by at least one-third on large datasets, in addition, it greatly improved scan and deserialization time, hence the overall costs. The following table compares the savings as well as the speedup obtained by converting data into Parquet from CSV.
-<!-- https://www.databricks.com/glossary/what-is-parquet -->
-
-
-<!-- https://www.upsolver.com/blog/apache-parquet-why-use -->
-## Basic Definition: What is Apache Parquet?
-
-Apache Parquet is a file format designed to support fast data processing for complex data, with several notable characteristics:
-
-1. Columnar: Unlike row-based formats such as CSV or Avro, Apache Parquet is column-oriented – meaning the values of each table column are stored next to each other, rather than those of each record:
-
-![](https://www.upsolver.com/wp-content/uploads/2020/05/Screen-Shot-2020-05-26-at-17.52.58.png)
-
-2. Open-source: Parquet is free to use and open source under the Apache Hadoop license, and is compatible with most Hadoop data processing frameworks. To quote the [project website](https://parquet.apache.org/){target="_blank"}, “Apache Parquet is… available to any project… regardless of the choice of data processing framework, data model, or programming language.”
-
-3. Self-describing: In addition to data, a Parquet file contains metadata including schema and structure. Each file stores both the data and the standards used for accessing each record – making it easier to decouple services that write, store, and read Parquet files.
-
-### Advantages of Parquet Columnar Storage – Why Should You Use It?
-
-The above characteristics of the Apache Parquet file format create several distinct benefits when it comes to storing and analyzing large volumes of data. Let’s look at some of them in more depth.
-Compression
-
-File compression is the act of taking a file and making it smaller. In Parquet, compression is performed column by column and it is built to support flexible compression options and extendable encoding schemas per data type – e.g., different encoding can be used for compressing integer and string data.
-
-Parquet data can be compressed using these encoding methods:
-
-    Dictionary encoding: this is enabled automatically and dynamically for data with a small number of unique values.
-
-    Bit packing: Storage of integers is usually done with dedicated 32 or 64 bits per integer. This allows more efficient storage of small integers.
-    Run length encoding (RLE): when the same value occurs multiple times, a single value is stored once along with the number of occurrences. Parquet implements a combined version of bit packing and RLE, in which the encoding switches based on which produces the best compression results.
-
-
-<!-- https://www.upsolver.com/blog/apache-parquet-why-use -->
-
-
-
-
-<!-- https://coralogix.com/blog/parquet-file-format/ -->
-### Advantages of Parquet File Format
-
-Parquet’s major selling point is the direct impact it has on business operations. For instance, storage costs, computation costs and analytics. In this section, we will examine how Parquet helps with these three factors.
-
-    Save storage costs
-
-A Parquet file format is built to support flexible compression options and efficient encoding schemes. Data can be compressed by using one of the several codecs available; as a result, different data files can be compressed differently. 
-
-Therefore, Parquet is good for storing big data of any kind (structured data tables, images, videos, documents). This specific way of storage translates to hardware savings on cloud storage space. 
-
-    Save computation costs
-
-As the data type for each column is quite similar, the compression of each column is straightforward, making queries even faster. When querying columnar storage you can skip over the non-relevant data very quickly. As a result, aggregation queries are less time-consuming compared to row-oriented databases.
-
-    Efficient analytics and high-speed transactions
-
-Parquet files are well-suited for Online Analytical Processing (OLAP) use cases and reporting workloads. With Parquet, you receive fast data access for specific columns, and improved performance in distributed data processing environments.
-
-Parquet is often used in conjunction with traditional Online Transaction Processing (OLTP) databases. OLTP databases are optimized for fast data updates and inserts, while Parquet complements them by offering efficient analytics capabilities.
-
-### Parquet file format for better data storage
-
-The Parquet file format is one of the most efficient data storage formats in the current data landscape, with multiple benefits such as less storage, compression, faster query performance, as mentioned above. If your system requires efficient query performance, storage effectiveness, and schema evolution, the Parquet file format is a great choice.
-
-Pair Parquet with a strong application monitoring software like Coralogix to understand the true impact of data structures. Read our full-stack observability guide to get started.
-
+    
 <!-- https://coralogix.com/blog/parquet-file-format/ -->
 
 
 
 
 
-### History
-
-<!-- wikipedia -->
-The open-source project to build Apache Parquet began as a joint effort between Twitter[3] and Cloudera.[4] Parquet was designed as an improvement on the Trevni columnar storage format created by Doug Cutting, the creator of Hadoop. The first version, Apache Parquet 1.0, was released in July 2013. Since April 27, 2015, Apache Parquet has been a top-level Apache Software Foundation (ASF)-sponsored project.[5][6] 
-<!-- wikipedia -->
-
-### Features
-
-<!-- wikipedia -->
-Apache Parquet is implemented using the record-shredding and assembly algorithm,[7] which accommodates the complex data structures that can be used to store data.[8] The values in each column are stored in contiguous memory locations, providing the following benefits:
-
-* Column-wise compression is efficient in storage space
-* Encoding and compression techniques specific to the type of data in each column can be used
-* Queries that fetch specific column values need not read the entire row, thus improving performance
-
-Apache Parquet is implemented using the Apache Thrift framework, which increases its flexibility; it can work with a number of programming languages like C++, Java, Python, PHP, etc.
-<!-- wikipedia -->
-
-### Dictionary encoding
-
-<!-- wikipedia -->
-Parquet has an automatic dictionary encoding enabled dynamically for data with a small number of unique values (i.e. below 105) that enables significant compression and boosts processing speed.[13]
-<!-- wikipedia -->
-
-
-
-### The solution
-
-<!-- https://posit.co/blog/speed-up-data-analytics-with-parquet-files/ -->
-We leverage the arrow R package to convert our row-based datasets into parquet files. Parquet partitions data into smaller chunks and enables improved performance when filtering against columns that have partitions.
-
-Parquet file formats have three main benefits for analytical usage:
-
-    Compression: low storage consumption
-    Speed: efficiently reads data in less time
-    Interoperability: can be read by many different languages
-<!-- https://posit.co/blog/speed-up-data-analytics-with-parquet-files/ -->
 
 
 
@@ -248,6 +150,6 @@ Parquet file formats have three main benefits for analytical usage:
 
 
 
-## References
 
-[file size comparisons](https://posit.co/blog/speed-up-data-analytics-with-parquet-files/){target="_blank"}
+
+
