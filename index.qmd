@@ -14,6 +14,7 @@ format:
     toc: true
     toc-expand: 3
     canonical-url: true
+    code-copy: true
   pdf: default
 execute: 
   warning: false
@@ -150,7 +151,119 @@ Ok, then let me introduce you to the R packages I've been exploring and how they
 
 ## arrow
 
-https://arrow.apache.org/docs/r/
+The R arrow package provides access to many of the features of the Apache Arrow C++ library for R users. The goal of arrow is to provide an Arrow C++ backend to dplyr, and access to the Arrow C++ library through familiar base R and tidyverse functions, or R6 classes. The dedicated R package website is located [here](https://arrow.apache.org/docs/r/index.html).
+
+
+What can the arrow package do?
+
+The arrow package provides binding to the C++ functionality for a wide range of data analysis tasks.
+
+* It allows users to read and write data in a variety formats:
+  * Read and write Parquet files, an efficient and widely used columnar format
+  * Read and write Arrow (formerly known as Feather) files, a format optimized for speed and interoperability
+  * Read and write CSV files with excellent speed and efficiency
+  * Read and write multi-file and larger-than-memory datasets
+  * Read JSON files
+* It provides access to remote file systems and servers:
+  * Read and write files in Amazon S3 and Google Cloud Storage buckets
+  * Connect to Arrow Flight servers to transport large datasets over networks
+* Additional features include:
+  * Manipulate and analyse Arrow data with dplyr verbs
+  * Zero-copy data sharing between R and Python
+  * Fine control over column types to work seamlessly with databases and data warehouses
+  * Toolkit for building connectors to other applications and services that use Arrow
+
+What is Apache Arrow?
+
+Apache Arrow is a cross-language development platform for in-memory and larger-than-memory data. It specifies a standardized language-independent columnar memory format for flat and hierarchical data, organized for efficient analytic operations on modern hardware. It also provides computational libraries and zero-copy streaming, messaging, and interprocess communication.
+
+### Arrow resources
+
+There are a few additional resources that you may find useful for getting started with arrow:
+
+* The official [Arrow R package documentation](https://arrow.apache.org/docs/r/){target="_blank"}
+* [Arrow for R cheatsheet](https://github.com/apache/arrow/blob/-/r/cheatsheet/arrow-cheatsheet.pdf){target="_blank"}
+* [Apache Arrow R Cookbook](https://arrow.apache.org/cookbook/r/index.html){target="_blank"}
+* R for Data Science [Chapter on Arrow](https://r4ds.hadley.nz/arrow){target="_blank"}
+* [Awesome Arrow R](https://github.com/thisisnic/awesome-arrow-r){target="_blank"}
+
+### Installation
+
+The latest release of arrow can be installed from CRAN. In most cases installing the latest release should work without requiring any additional system dependencies, especially if you are using Windows or macOS.
+
+```{r}
+install.packages("arrow")
+```
+
+If you are having trouble installing from CRAN, then we offer two alternative install options for grabbing the latest arrow release. First, R-universe provides pre-compiled binaries for the most commonly used operating systems.
+
+```{r}
+# install.packages("arrow", repos = c("https://apache.r-universe.dev", "https://cloud.r-project.org"))
+```
+
+### Get started with Arrow
+
+```{r}
+library(arrow, warn.conflicts = FALSE)
+library(dplyr, warn.conflicts = FALSE)
+
+starwars
+write_parquet(starwars, 'starwars.parquet')
+
+```
+
+```{r}
+sw_frame <- read_parquet('starwars.parquet')
+sw_table <- read_parquet('starwars.parquet', as_data_frame = FALSE)
+sw_table
+```
+#### Multi-file data sets
+
+```{r}
+set.seed(1234)
+nrows <- 100000
+random_data <- data.frame(
+  x = rnorm(nrows),
+  y = rnorm(nrows),
+  subset = sample(10, nrows, replace = TRUE)
+)
+```
+
+```{r}
+dataset_path <- "random_data"
+```
+
+```{r}
+random_data %>%
+  group_by(subset) %>%
+  write_dataset(dataset_path)
+```
+
+```{r}
+list.files(dataset_path, recursive = TRUE)
+```
+Each of these Parquet files can be opened individually using `read_parquet()` but is often more convenient – especially for very large data sets – to scan the folder and “connect” to the data set without loading it into memory. We can do this using `open_dataset()`:
+
+```{r}
+dset <- open_dataset(dataset_path)
+dset
+```
+
+#### Analising Arrow data with `dplyr`
+
+```{r}
+dset %>%
+  group_by(subset) %>%
+  summarize(mean_x = mean(x), min_y = min(y)) %>%
+  filter(mean_x > 0) %>%
+  arrange(subset) %>%
+  collect()
+```
+
+
+<!-- check articles to show better how to use the filtering thing -->
+
+
 
 ### example from real life with ebird pts?
 
