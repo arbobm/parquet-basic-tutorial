@@ -1,0 +1,59 @@
+---
+title: "funfacts"
+format: html
+---
+
+### History
+
+<!-- wikipedia -->
+The open-source project to build Apache Parquet began as a joint effort between Twitter[3] and Cloudera.[4] Parquet was designed as an improvement on the Trevni columnar storage format created by Doug Cutting, the creator of Hadoop. The first version, Apache Parquet 1.0, was released in July 2013. Since April 27, 2015, Apache Parquet has been a top-level Apache Software Foundation (ASF)-sponsored project.[5][6] 
+<!-- wikipedia -->
+
+### Features
+
+<!-- wikipedia -->
+Apache Parquet is implemented using the record-shredding and assembly algorithm,[7] which accommodates the complex data structures that can be used to store data.[8] The values in each column are stored in contiguous memory locations, providing the following benefits:
+
+* Column-wise compression is efficient in storage space
+* Encoding and compression techniques specific to the type of data in each column can be used
+* Queries that fetch specific column values need not read the entire row, thus improving performance
+
+Apache Parquet is implemented using the Apache Thrift framework, which increases its flexibility; it can work with a number of programming languages like C++, Java, Python, PHP, etc.
+<!-- wikipedia -->
+
+### Dictionary encoding
+
+<!-- wikipedia -->
+Parquet has an automatic dictionary encoding enabled dynamically for data with a small number of unique values (i.e. below 105) that enables significant compression and boosts processing speed.[13]
+<!-- wikipedia -->
+
+
+
+### The solution
+
+<!-- https://posit.co/blog/speed-up-data-analytics-with-parquet-files/ -->
+We leverage the arrow R package to convert our row-based datasets into parquet files. Parquet partitions data into smaller chunks and enables improved performance when filtering against columns that have partitions.
+
+Parquet file formats have three main benefits for analytical usage:
+
+    Compression: low storage consumption
+    Speed: efficiently reads data in less time
+    Interoperability: can be read by many different languages
+<!-- https://posit.co/blog/speed-up-data-analytics-with-parquet-files/ -->
+
+## arrow
+
+## geoparquet - sfarrow
+
+## tidyverse - parquet
+
+
+
+
+
+
+
+
+## References
+
+[file size comparisons](https://posit.co/blog/speed-up-data-analytics-with-parquet-files/){target="_blank"}
