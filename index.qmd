@@ -8,7 +8,7 @@ published-title: Created
 format:
   html:
     embed-resources: true
-    code-fold: true
+    code-fold: false
     code-overflow: wrap
     theme: cosmo
     toc: true
@@ -16,11 +16,11 @@ format:
     canonical-url: true
     code-copy: true
   pdf: default
-execute: 
-  warning: false
-  error: false
-  message: false
-  echo: false
+# execute: 
+  # warning: false
+  # error: false
+  # message: false
+  # echo: false
 # bibliography: references.bib
 lightbox: # https://quarto.org/docs/output-formats/html-lightbox-figures.html
   match: auto
@@ -145,7 +145,7 @@ Let’s quickly stop here, as I want you to realize the difference between vario
     Column store – the engine needs to scan 2 columns and all 6 rows
     Column store with row groups – the engine needs to scan 2 columns and 4 rows
     
-# I'm tired of reading non-sense
+# "*I'm tired of reading non-sense*"
 
 Ok, then let me introduce you to the R packages I've been exploring and how they made my life easier.
 
@@ -153,8 +153,7 @@ Ok, then let me introduce you to the R packages I've been exploring and how they
 
 The R arrow package provides access to many of the features of the Apache Arrow C++ library for R users. The goal of arrow is to provide an Arrow C++ backend to dplyr, and access to the Arrow C++ library through familiar base R and tidyverse functions, or R6 classes. The dedicated R package website is located [here](https://arrow.apache.org/docs/r/index.html).
 
-
-What can the arrow package do?
+### What can the arrow package do?
 
 The arrow package provides binding to the C++ functionality for a wide range of data analysis tasks.
 
@@ -173,7 +172,7 @@ The arrow package provides binding to the C++ functionality for a wide range of 
   * Fine control over column types to work seamlessly with databases and data warehouses
   * Toolkit for building connectors to other applications and services that use Arrow
 
-What is Apache Arrow?
+### What is Apache Arrow?
 
 Apache Arrow is a cross-language development platform for in-memory and larger-than-memory data. It specifies a standardized language-independent columnar memory format for flat and hierarchical data, organized for efficient analytic operations on modern hardware. It also provides computational libraries and zero-copy streaming, messaging, and interprocess communication.
 
@@ -191,21 +190,25 @@ There are a few additional resources that you may find useful for getting starte
 
 The latest release of arrow can be installed from CRAN. In most cases installing the latest release should work without requiring any additional system dependencies, especially if you are using Windows or macOS.
 
-```{r}
-# install.packages("arrow")
+```{r install-arrow}
+#| eval: false
+install.packages("arrow")
 ```
 
 If you are having trouble installing from CRAN, then we offer two alternative install options for grabbing the latest arrow release. First, R-universe provides pre-compiled binaries for the most commonly used operating systems.
 
-```{r}
-# install.packages("arrow", repos = c("https://apache.r-universe.dev", "https://cloud.r-project.org"))
+```{r install-arrow-alt}
+#| eval: false
+install.packages("arrow", repos = c("https://apache.r-universe.dev", "https://cloud.r-project.org"))
 ```
 
 ### Get started with Arrow
 
 ```{r}
-library(arrow, warn.conflicts = FALSE)
-library(dplyr, warn.conflicts = FALSE)
+#| message: false
+#| warning: false
+library(arrow)
+library(dplyr)
 
 starwars
 write_parquet(starwars, 'outputs/starwars.parquet')
@@ -268,10 +271,26 @@ dset %>%
 ### example from real life with ebird pts?
 
 ```{r}
-# x <- arrow::read_delim_arrow("C:/Users/Bruna.Arbo-Meneses/OneDrive - BirdLife International/data_bruna/australia/ebird/ebd_filtered_aus_2025.txt",
-#                        delim = "\t", quote = "")
+ebd_filtered_aus_2025 <- arrow::read_delim_arrow("ebd_filtered_aus_2025.txt",
+                                                 delim = "\t", quote = "")
+
+ebd_filtered_aus_2025 |> 
+  group_by() |>
+  write_dataset('ebd_filtered_aus_2025_parquet') ## folder
+```
+
+```{r}
+ebd_filtered_aus_ds <- open_dataset('ebd_filtered_aus_2025_parquet')
+ebd_filtered_aus_ds
+```
+
+```{r}
+ebd_filtered_aus_ds |> 
+  filter() |>  ## add filters
+  collect()
 
 ```
+
 
 
 
