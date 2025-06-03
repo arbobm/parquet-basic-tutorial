@@ -14,6 +14,7 @@ format:
     toc: true
     toc-expand: 3
     canonical-url: true
+  pdf: default
 execute: 
   warning: false
   error: false
@@ -58,7 +59,7 @@ The above characteristics of the Apache Parquet file format create several disti
 
 ::: {.panel-tabset}
 
-# Compression
+### Compression
 
 File compression is the act of taking a file and making it smaller. In Parquet, compression is performed column by column and it is built to support flexible compression options and extendable encoding schemas per data type – e.g., different encoding can be used for compressing integer and string data.
 
@@ -78,7 +79,7 @@ Parquet data can be compressed using these encoding methods:
 
 <!-- Embedded metadata helps in efficiently reading and processing the data. Any program that's used to read the data can also access the metadata to determine what type of data is expected to be found in a given column. -->
 
-# Performance
+### Performance
 
 As opposed to row-based file formats like CSV, Parquet is optimized for performance. When running queries on your Parquet-based file-system, you can focus only on the relevant data very quickly. Moreover, the amount of data scanned will be way smaller and will result in less I/O usage. To understand this, let's look a bit deeper into how Parquet files are structured.
 
@@ -106,7 +107,7 @@ This structure is well-optimized both for fast query performance, as well as low
 
 <!-- On the other hand, Parquet's columnar storage and efficient compression makes it well-suited for analytical queries that only need to access specific columns. This compression leads to faster query performance when dealing with large datasets. A  recent [survey by Green Shield Canada](https://posit.co/blog/speed-up-data-analytics-with-parquet-files/){target="_blank"} found that with the parquet file format, they were able to process and query data 1,500 times faster than with CSVs.  -->
 
-# Schema evolution
+### Schema evolution
 
 When using columnar file formats like Parquet, users can start with a simple schema, and gradually add more columns to the schema as needed. In this way, users may end up with multiple Parquet files with different but mutually compatible schemas. In these cases, Parquet supports automatic schema merging among these files.
 
@@ -118,7 +119,7 @@ When using columnar file formats like Parquet, users can start with a simple sch
 
 :::
 
-# Column-Oriented vs Row-Based Storage for Analytic Querying
+## Column-Oriented vs Row-Based Storage for Analytic Querying
 
 Data is often generated and more easily conceptualized in rows. We are used to thinking in terms of Excel spreadsheets, where we can see all the data relevant to a specific record in one neat and organized row. However, for large-scale analytical querying, columnar storage comes with significant advantages with regards to cost and performance.
 
@@ -142,10 +143,10 @@ Let’s quickly stop here, as I want you to realize the difference between vario
     Row store – the engine needs to scan all 5 columns and all 6 rows
     Column store – the engine needs to scan 2 columns and all 6 rows
     Column store with row groups – the engine needs to scan 2 columns and 4 rows
+    
+# I'm tired of reading non-sense
 
-
-
-# mao na massa
+Ok, then let me introduce you to the R packages I've been exploring and how they made my life easier.
 
 ## arrow
 

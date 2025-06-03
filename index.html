@@ -3080,9 +3080,9 @@ font-family: inherit;
   <li><a href="#what-is-it" id="toc-what-is-it" class="nav-link" data-scroll-target="#what-is-it">What is it?</a></li>
   <li><a href="#why-should-we-care" id="toc-why-should-we-care" class="nav-link" data-scroll-target="#why-should-we-care">Why should we care?</a></li>
   <li><a href="#advantages-of-parquet-columnar-storage-why-should-you-use-it" id="toc-advantages-of-parquet-columnar-storage-why-should-you-use-it" class="nav-link" data-scroll-target="#advantages-of-parquet-columnar-storage-why-should-you-use-it">Advantages of Parquet Columnar Storage – Why Should You Use It?</a></li>
-  </ul></li>
   <li><a href="#column-oriented-vs-row-based-storage-for-analytic-querying" id="toc-column-oriented-vs-row-based-storage-for-analytic-querying" class="nav-link" data-scroll-target="#column-oriented-vs-row-based-storage-for-analytic-querying">Column-Oriented vs Row-Based Storage for Analytic Querying</a></li>
-  <li><a href="#mao-na-massa" id="toc-mao-na-massa" class="nav-link" data-scroll-target="#mao-na-massa">mao na massa</a>
+  </ul></li>
+  <li><a href="#im-tired-of-reading-non-sense" id="toc-im-tired-of-reading-non-sense" class="nav-link" data-scroll-target="#im-tired-of-reading-non-sense">I’m tired of reading non-sense</a>
   <ul class="collapse">
   <li><a href="#arrow" id="toc-arrow" class="nav-link" data-scroll-target="#arrow">arrow</a>
   <ul class="collapse">
@@ -3095,7 +3095,7 @@ font-family: inherit;
   <li><a href="#tidyverse---parquet" id="toc-tidyverse---parquet" class="nav-link" data-scroll-target="#tidyverse---parquet">tidyverse - parquet</a></li>
   </ul></li>
   </ul>
-</nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
 </div>
 <main class="content" id="quarto-document-content">
 
@@ -3202,9 +3202,8 @@ font-family: inherit;
 </div>
 </div>
 </section>
-</section>
-<section id="column-oriented-vs-row-based-storage-for-analytic-querying" class="level1">
-<h1>Column-Oriented vs Row-Based Storage for Analytic Querying</h1>
+<section id="column-oriented-vs-row-based-storage-for-analytic-querying" class="level2">
+<h2 class="anchored" data-anchor-id="column-oriented-vs-row-based-storage-for-analytic-querying">Column-Oriented vs Row-Based Storage for Analytic Querying</h2>
 <p>Data is often generated and more easily conceptualized in rows. We are used to thinking in terms of Excel spreadsheets, where we can see all the data relevant to a specific record in one neat and organized row. However, for large-scale analytical querying, columnar storage comes with significant advantages with regards to cost and performance.</p>
 <p>Complex data such as logs and event streams would need to be represented as a table with hundreds or thousands of columns, and many millions of rows. Storing this table in a row based format such as CSV would mean:</p>
 <ul>
@@ -3219,8 +3218,10 @@ font-family: inherit;
 Column store – the engine needs to scan 2 columns and all 6 rows
 Column store with row groups – the engine needs to scan 2 columns and 4 rows</code></pre>
 </section>
-<section id="mao-na-massa" class="level1">
-<h1>mao na massa</h1>
+</section>
+<section id="im-tired-of-reading-non-sense" class="level1">
+<h1>I’m tired of reading non-sense</h1>
+<p>Ok, then let me introduce you to the R packages I’ve been exploring and how they made my life easier.</p>
 <section id="arrow" class="level2">
 <h2 class="anchored" data-anchor-id="arrow">arrow</h2>
 <p>https://arrow.apache.org/docs/r/</p>
@@ -3671,7 +3672,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","loop":false,"closeEffect":"fade","descPosition":"right","openEffect":"fade"});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"fade","selector":".lightbox","descPosition":"right","loop":false,"openEffect":"fade"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
