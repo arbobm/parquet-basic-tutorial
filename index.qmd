@@ -22,11 +22,11 @@ format:
   # message: false
   # echo: false
 # bibliography: references.bib
-lightbox: # https://quarto.org/docs/output-formats/html-lightbox-figures.html
-  match: auto
-  effect: fade
-  desc-position: right
-dpi: 500
+# lightbox: # https://quarto.org/docs/output-formats/html-lightbox-figures.html
+#   match: auto
+#   effect: fade
+#   desc-position: right
+# dpi: 500
 ---
 
 # Welcome to the fantastic world of Parquet
@@ -271,23 +271,42 @@ dset %>%
 ### example from real life with ebird pts?
 
 ```{r}
+#| eval: false # por enquanto
 ebd_filtered_aus_2025 <- arrow::read_delim_arrow("ebd_filtered_aus_2025.txt",
                                                  delim = "\t", quote = "")
+checklist <- openxlsx::read.xlsx('https://www.birds.cornell.edu/clementschecklist/wp-content/uploads/2024/10/Clements-v2024-October-2024-rev.xlsx') |> 
+  janitor::clean_names()
 
+checklist |> 
+  head() |> 
+  dplyr::glimpse()
 ebd_filtered_aus_2025 |> 
-  group_by() |>
+  left_join(checklist) |> ## by species_code?
+  group_by(family) |>
   write_dataset('ebd_filtered_aus_2025_parquet') ## folder
 ```
 
 ```{r}
+#| eval: false # por enquanto
 ebd_filtered_aus_ds <- open_dataset('ebd_filtered_aus_2025_parquet')
 ebd_filtered_aus_ds
 ```
 
 ```{r}
+#| eval: false # por enquanto
+## filter category == species
+# unique(ebird_data0$category)   ### https://support.ebird.org/en/support/solutions/articles/48000837816
+## filter category == species and select some columns to simplify
+# ebird_data <- ebird_data0 |>
+#   filter(category == "species")
+
 ebd_filtered_aus_ds |> 
   filter() |>  ## add filters
   collect()
+
+# ebird_data |> 
+#   count(exotic_code)
+
 
 ```
 
