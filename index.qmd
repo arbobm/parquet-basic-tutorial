@@ -293,7 +293,7 @@ dset %>%
   collect()
 ```
 
-You can find a list of other fun functions available in `dplyr` queries [here](https://arrow.apache.org/docs/r/reference/acero.html){target="_blank"}
+You can find a list of other fun functions available in `dplyr` queries [here](https://arrow.apache.org/docs/r/reference/acero.html){target="_blank"}.
 
 Have you notice the `collect()` at the end of the pipeline? No actual computations are performed until `collect()` (or the related `compute()` function) is called. This “lazy evaluation” makes it possible for the Arrow C++ compute engine to optimize how the computations are performed.
 
@@ -350,15 +350,22 @@ You can try write parquet file parts grouping by two columns (e.g. month and yea
 
 Yes, there is parquet file format for spatial data.
 
-![](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ2ZmY2oxNDlvbjFqeHFndjRsMGg0djFkanBkdWx4dTVkcTQ2c3B6MCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/B0vFTrb0ZGDf2/giphy.gif){width=40%}
+::: {.content-visible when-format="html"}
 
-I'll just leave the link to the package here for now, but we can try and practice together with species range maps, for exemple :)
+![](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ2ZmY2oxNDlvbjFqeHFndjRsMGg0djFkanBkdWx4dTVkcTQ2c3B6MCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/B0vFTrb0ZGDf2/giphy.gif){width=40% fig-align="center"}
 
-<!-- ### example from real life with rangemaps? -->
+:::
+
+I'll just leave the link to the package here for now, but we can try and practice together with species range maps, for example :)
+
+[Getting started with amazing `sfarrow`](https://wcjochem.github.io/sfarrow/articles/example_sfarrow.html){target="_blank"}
+<!-- ### example from real life with range maps? -->
+
 
 ## tidyverse - parquet
 
-https://www.tidyverse.org/blog/2025/01/nanoparquet-0-4-0/
+There is a [tidyverse parquet package](https://www.tidyverse.org/blog/2025/01/nanoparquet-0-4-0/){target="_blank"} that I haven't tried yet, but they are usually really cool.
+
 
 
 
