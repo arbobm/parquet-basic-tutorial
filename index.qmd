@@ -15,6 +15,7 @@ format:
     toc-expand: 3
     canonical-url: true
     code-copy: true
+    css: templates/style.css
   pdf: default
 # execute: 
   # warning: false
@@ -151,7 +152,7 @@ Ok, then let me introduce you to the R packages I've been exploring and how they
 
 ## arrow
 
-The R arrow package provides access to many of the features of the Apache Arrow C++ library for R users. The goal of arrow is to provide an Arrow C++ backend to dplyr, and access to the Arrow C++ library through familiar base R and tidyverse functions, or R6 classes. The dedicated R package website is located [here](https://arrow.apache.org/docs/r/index.html).
+The R `arrow` package provides access to many of the features of the Apache Arrow C++ library for R users. The goal of arrow is to provide an Arrow C++ back-end to `dplyr`, and access to the Arrow C++ library through familiar base R and tidyverse functions, or R6 classes. The dedicated R package website is located [here](https://arrow.apache.org/docs/r/index.html).
 
 ### What can the arrow package do?
 
@@ -159,19 +160,18 @@ The arrow package provides binding to the C++ functionality for a wide range of 
 
 * It allows users to read and write data in a variety formats:
   * Read and write Parquet files, an efficient and widely used columnar format
-  * Read and write Arrow (formerly known as Feather) files, a format optimized for speed and interoperability
-  * Read and write CSV files with excellent speed and efficiency
+  * Read and write Arrow (formerly known as Feather) files, a format optimized for speed and interoperability*
+  * Read and write CSV files with excellent speed and efficiency*
   * Read and write multi-file and larger-than-memory datasets
-  * Read JSON files
-* It provides access to remote file systems and servers:
-  * Read and write files in Amazon S3 and Google Cloud Storage buckets
-  * Connect to Arrow Flight servers to transport large datasets over networks
-* Additional features include:
-  * Manipulate and analyse Arrow data with dplyr verbs
-  * Zero-copy data sharing between R and Python
-  * Fine control over column types to work seamlessly with databases and data warehouses
-  * Toolkit for building connectors to other applications and services that use Arrow
+  * Read JSON files*
+  
+**I haven't tried it yet, let me know if you find any exciting adventures*
 
+* It provides access to remote file systems and servers and other cloud related stuff you can read more about [here](https://arrow.apache.org/docs/r/#what-can-the-arrow-package-do){target="_blank"}.
+* Additional features include:
+  * Manipulate and analyse Arrow data with beloved dplyr verbs
+  * Fine control over column types to work seamlessly with databases and data warehouses
+  
 ### What is Apache Arrow?
 
 Apache Arrow is a cross-language development platform for in-memory and larger-than-memory data. It specifies a standardized language-independent columnar memory format for flat and hierarchical data, organized for efficient analytic operations on modern hardware. It also provides computational libraries and zero-copy streaming, messaging, and interprocess communication.
@@ -192,10 +192,10 @@ The latest release of arrow can be installed from CRAN. In most cases installing
 
 ```{r install-arrow}
 #| eval: false
-install.packages("arrow")
+install.packages('arrow')
 ```
 
-If you are having trouble installing from CRAN, then we offer two alternative install options for grabbing the latest arrow release. First, R-universe provides pre-compiled binaries for the most commonly used operating systems.
+Alternative install option for grabbing the latest arrow release in case the previous doesn't work.
 
 ```{r install-arrow-alt}
 #| eval: false
@@ -204,9 +204,12 @@ install.packages("arrow", repos = c("https://apache.r-universe.dev", "https://cl
 
 ### Get started with Arrow
 
-```{r}
+In the example below, we take the starwars data provided by the `dplyr` package and write it to a Parquet file using `write_parquet()`
+
+```{r write-starwars}
 #| message: false
 #| warning: false
+
 library(arrow)
 library(dplyr)
 
@@ -215,12 +218,26 @@ write_parquet(starwars, 'outputs/starwars.parquet')
 
 ```
 
+Now we can then use `read_parquet()` to load the data from this file. The default behaviour is to return a data frame (`sw_frame`) but when we set `as_data_frame = FALSE` the data are read as an Arrow Table (`sw_table`):
+
 ```{r}
 sw_frame <- read_parquet('outputs/starwars.parquet')
 sw_table <- read_parquet('outputs/starwars.parquet', as_data_frame = FALSE)
 sw_table
 ```
-#### Multi-file data sets
+
+One useful feature of Parquet files is that they store data column-wise, and contain metadata that allow file readers to skip to the relevant sections of the file. That means it is possible to load only a subset of the columns without reading the complete file. The col_select argument to `read_parquet()` supports this functionality:
+
+```{r}
+colnames(sw_table)
+read_parquet('outputs/starwars.parquet', col_select = c("name", "height", "mass"))
+```
+
+#### Multi-file data sets - my favourite part!
+
+When a tabular data set becomes large, it is often good practice to partition the data into meaningful subsets and store each one in a separate file. Among other things, this means that if only one subset of the data are relevant to an analysis, only one (smaller) file needs to be read. The `arrow` package provides the Dataset interface, a convenient way to read, write, and analyse a single data file that is larger-than-memory and multi-file data sets.
+
+To illustrate the concepts, we’ll create a nonsense data set with 100000 rows that can be split into 10 subsets:
 
 ```{r}
 set.seed(1234)
@@ -232,9 +249,13 @@ random_data <- data.frame(
 )
 ```
 
+What we might like to do is partition this data and then write it to 10 separate Parquet files, one corresponding to each value of the subset column. To do this we first specify the path to a folder into which we will write the data files:
+
 ```{r}
 dataset_path <- "outputs/random_data"
 ```
+
+We can then use `group_by()` function from `dplyr` to specify that the data will be partitioned using the `subset` column, and then pass the grouped data to `write_dataset()`:
 
 ```{r}
 random_data %>%
@@ -242,9 +263,12 @@ random_data %>%
   write_dataset(dataset_path)
 ```
 
+This creates a set of 10 files, one for each subset. These files are named according to the “hive partitioning” format as shown below:
+
 ```{r}
 list.files(dataset_path, recursive = TRUE)
 ```
+
 Each of these Parquet files can be opened individually using `read_parquet()` but is often more convenient – especially for very large data sets – to scan the folder and “connect” to the data set without loading it into memory. We can do this using `open_dataset()`:
 
 ```{r}
@@ -252,7 +276,13 @@ dset <- open_dataset(dataset_path)
 dset
 ```
 
+This `dset` object does not store the data in-memory, only some metadata. However, it is possible to analyse the data referred to be `dset` as if it had been loaded.
+
+Other examples on reading more complex datasets can be found [here](https://arrow.apache.org/docs/r/articles/dataset.html){target="_blank"}.
+
 #### Analising Arrow data with `dplyr`
+
+Arrow Tables and Datasets can be analysed using `dplyr` syntax. This is possible because the arrow R package supplies a back-end that translates `dplyr` verbs into commands that are understood by the Arrow C++ library, and will similarly translate R expressions that appear within a call to a `dplyr` verb. For example, although the `dset` Dataset is not a data frame (and does not store the data values in memory), you can still pass it to a `dplyr` pipeline like the one shown below:
 
 ```{r}
 dset %>%
@@ -263,59 +293,68 @@ dset %>%
   collect()
 ```
 
+You can find a list of other fun functions available in `dplyr` queries [here](https://arrow.apache.org/docs/r/reference/acero.html){target="_blank"}
+
+Have you notice the `collect()` at the end of the pipeline? No actual computations are performed until `collect()` (or the related `compute()` function) is called. This “lazy evaluation” makes it possible for the Arrow C++ compute engine to optimize how the computations are performed.
+
+#### Your turn
+
+I may add some examples with real data here in the future. Meanwhile, try writing your data frames in Parquet format using `group_by()` to partition it. For instance, if you have a species list, try grouping by family names.
+
+You can try write parquet file parts grouping by two columns (e.g. month and year).
 
 <!-- check articles to show better how to use the filtering thing -->
 
+<!-- ### example from real life with ebird pts? -->
+
+<!-- ```{r} -->
+<!-- #| eval: false # por enquanto -->
+<!-- ebd_filtered_aus_2025 <- data.table::fread("C:/Users/Bruna.Arbo-Meneses/OneDrive - BirdLife International/data_bruna/australia/ebird/ebird_aus_finalfilter_2025.csv") -->
+<!-- checklist <- openxlsx::read.xlsx('https://www.birds.cornell.edu/clementschecklist/wp-content/uploads/2024/10/Clements-v2024-October-2024-rev.xlsx') |>  -->
+<!--   janitor::clean_names() -->
+
+<!-- checklist |>  -->
+<!--   head() |>  -->
+<!--   dplyr::glimpse() -->
+<!-- ebd_filtered_aus_2025 |>  -->
+<!--   left_join(checklist) |> ## by species_code? -->
+<!--   group_by(family) |> -->
+<!--   write_dataset('ebd_filtered_aus_2025_parquet') ## folder -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #| eval: false # por enquanto -->
+<!-- ebd_filtered_aus_ds <- open_dataset('ebd_filtered_aus_2025_parquet') -->
+<!-- ebd_filtered_aus_ds -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #| eval: false # por enquanto -->
+<!-- ## filter category == species -->
+<!-- # unique(ebird_data0$category)   ### https://support.ebird.org/en/support/solutions/articles/48000837816 -->
+<!-- ## filter category == species and select some columns to simplify -->
+<!-- # ebird_data <- ebird_data0 |> -->
+<!-- #   filter(category == "species") -->
+
+<!-- ebd_filtered_aus_ds |>  -->
+<!--   filter() |>  ## add filters -->
+<!--   collect() -->
+
+<!-- # ebird_data |>  -->
+<!-- #   count(exotic_code) -->
 
 
-### example from real life with ebird pts?
+<!-- ``` -->
 
-```{r}
-#| eval: false # por enquanto
-ebd_filtered_aus_2025 <- arrow::read_delim_arrow("ebd_filtered_aus_2025.txt",
-                                                 delim = "\t", quote = "")
-checklist <- openxlsx::read.xlsx('https://www.birds.cornell.edu/clementschecklist/wp-content/uploads/2024/10/Clements-v2024-October-2024-rev.xlsx') |> 
-  janitor::clean_names()
+## [Geoparquet](https://geoparquet.org/) - `sfarrow`
 
-checklist |> 
-  head() |> 
-  dplyr::glimpse()
-ebd_filtered_aus_2025 |> 
-  left_join(checklist) |> ## by species_code?
-  group_by(family) |>
-  write_dataset('ebd_filtered_aus_2025_parquet') ## folder
-```
+Yes, there is parquet file format for spatial data.
 
-```{r}
-#| eval: false # por enquanto
-ebd_filtered_aus_ds <- open_dataset('ebd_filtered_aus_2025_parquet')
-ebd_filtered_aus_ds
-```
+![](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ2ZmY2oxNDlvbjFqeHFndjRsMGg0djFkanBkdWx4dTVkcTQ2c3B6MCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/B0vFTrb0ZGDf2/giphy.gif){width=40%}
 
-```{r}
-#| eval: false # por enquanto
-## filter category == species
-# unique(ebird_data0$category)   ### https://support.ebird.org/en/support/solutions/articles/48000837816
-## filter category == species and select some columns to simplify
-# ebird_data <- ebird_data0 |>
-#   filter(category == "species")
+I'll just leave the link to the package here for now, but we can try and practice together with species range maps, for exemple :)
 
-ebd_filtered_aus_ds |> 
-  filter() |>  ## add filters
-  collect()
-
-# ebird_data |> 
-#   count(exotic_code)
-
-
-```
-
-
-
-
-## geoparquet - sfarrow
-
-### example from real life with rangemaps?
+<!-- ### example from real life with rangemaps? -->
 
 ## tidyverse - parquet
 
