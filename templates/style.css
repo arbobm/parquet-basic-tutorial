@@ -1,3 +1,31 @@
 p code:not(.sourceCode){
   background-color: transparent;
+  color: #7E7F74;
+}
+
+a {
+  color: #183029;
+}
+
+a:hover {
+  color: #789D4A;
+}
+
+
+.sidebar nav[role="doc-toc"] ul > li > a:hover, 
+.sidebar nav[role="doc-toc"] ul > li > ul > li > a:hover, 
+.sidebar nav[role="doc-toc"] ul > li > a.active, 
+.sidebar nav[role="doc-toc"] ul > li > ul > li > a.active,
+.nav-link:hover,
+.nav-link {
+  color: #00629B !important;
+}
+
+.nav-link:active {
+  color: #013a5c;
+}
+
+code {
+  background-color: transparent;
+  color: #7E7F74;
 }

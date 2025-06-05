@@ -17,13 +17,14 @@ format:
     canonical-url: true
     code-copy: true
     css: templates/style.css
-  pdf: default
+  pdf: 
+    toc: true
+    toc-depth: 3
 # execute: 
   # warning: false
   # error: false
   # message: false
   # echo: false
-# bibliography: references.bib
 lightbox: # https://quarto.org/docs/output-formats/html-lightbox-figures.html
   match: auto
   effect: fade
@@ -32,6 +33,9 @@ dpi: 500
 footnotes-hover: true
 # reference-location: margin
 # citation-location: margin
+csl: templates/cambridge-journal-of-economics.csl
+bibliography: templates/references.bib
+
 ---
 
 # Welcome to the fantastic world of Parquet
@@ -52,7 +56,7 @@ Most of the text in this document was copied and pasted from various sources, wh
 
 ## So, what is it?
 
-![](https://www.jumpingrivers.com/blog/parquet-file-format-big-data-r/parquet-logo.png){width=50% fig-align="center"}
+![](https://www.jumpingrivers.com/blog/parquet-file-format-big-data-r/parquet-logo.png){width=150 fig-align="center"}
 
 Apache Parquet is an open source, column-oriented data file format designed for efficient data storage and retrieval. It provides high performance compression and encoding schemes to handle complex data in bulk and is supported in many programming language and analytics tools^[[All about Parquet - Overview](https://parquet.apache.org/docs/overview/)].
 
@@ -70,7 +74,7 @@ The key difference between a CSV and Parquet file format is how each one is orga
 
 2. **Open-source:** Parquet is free to use and open source under the Apache Hadoop license. 
 
-> Apache Parquet is a columnar storage format available to any project […], regardless of the choice of data processing framework, data model or programming language^[https://parquet.apache.org/].
+> Apache Parquet is a columnar storage format available to any project […], regardless of the choice of data processing framework, data model or programming language^[[https://parquet.apache.org/](https://parquet.apache.org/)].
 
 3. **Self-describing:** In addition to data, a Parquet file contains metadata including schema and structure. Each file stores both the data and the standards used for accessing each record – making it easier to decouple services that write, store, and read Parquet files.
 4. **Binary format:** Parquet file formats store data in binary format, which reduces the overhead of textual representation. It's important to note that Parquet files are not stored in plain text, thus cannot be opened in a text editor.
@@ -177,15 +181,17 @@ So, to answer the question: how many users from the USA bought T-Shirt, the engi
 
 Let’s quickly stop here, as I want you to realize the difference between various types of storage in terms of the work that needs to be performed by the engine:
 
-    Row store – the engine needs to scan all 5 columns and all 6 rows
-    Column store – the engine needs to scan 2 columns and all 6 rows
-    Column store with row groups – the engine needs to scan 2 columns and 4 rows
+* Row store – the engine needs to scan all 5 columns and all 6 rows
+* Column store – the engine needs to scan 2 columns and all 6 rows
+* Column store with row groups – the engine needs to scan 2 columns and 4 rows
     
 # "*I'm tired of reading non-sense*"
 
 Ok, then let me introduce you to the R packages I've been exploring and how they made my life easier.
 
-## arrow
+## `arrow` package
+
+[![](https://arrow.apache.org/img/arrow-logo_hex_black-txt_white-bg.png){fig-align="center" width=100}](https://arrow.apache.org/docs/r/){target="_blank"}
 
 The R `arrow` package provides access to many of the features of the Apache Arrow C++ library for R users. The goal of arrow is to provide an Arrow C++ back-end to `dplyr`, and access to the Arrow C++ library through familiar base R and tidyverse functions, or R6 classes. The dedicated R package website is located [here](https://arrow.apache.org/docs/r/index.html).
 
@@ -200,7 +206,7 @@ The arrow package provides binding to the C++ functionality for a wide range of 
   * Read and write multi-file and larger-than-memory datasets
   * Read JSON files*
   
-**I haven't tried it yet, let me know if you find any exciting adventures*
+> \* *Things that I haven't tried it yet, let me know if you find any exciting adventures*
 
 * It provides access to remote file systems and servers and other cloud related stuff you can read more about [here](https://arrow.apache.org/docs/r/#what-can-the-arrow-package-do){target="_blank"}.
 * Additional features include:
