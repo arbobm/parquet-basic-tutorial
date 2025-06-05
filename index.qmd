@@ -24,10 +24,10 @@ format:
   # message: false
   # echo: false
 # bibliography: references.bib
-# lightbox: # https://quarto.org/docs/output-formats/html-lightbox-figures.html
-#   match: auto
-#   effect: fade
-#   desc-position: right
+lightbox: # https://quarto.org/docs/output-formats/html-lightbox-figures.html
+  match: auto
+  effect: fade
+  desc-position: right
 dpi: 500
 footnotes-hover: true
 # reference-location: margin
@@ -56,11 +56,7 @@ Most of the text in this document was copied and pasted from various sources, wh
 
 Apache Parquet is an open source, column-oriented data file format designed for efficient data storage and retrieval. It provides high performance compression and encoding schemes to handle complex data in bulk and is supported in many programming language and analytics tools^[[All about Parquet - Overview](https://parquet.apache.org/docs/overview/)].
 
-> The open-source project to build Apache Parquet began as a joint effort between Twitter[3] and Cloudera.[4] Parquet was designed as an improvement on the Trevni columnar storage format created by Doug Cutting, the creator of Hadoop. The first version, Apache Parquet 1.0, was released in July 2013. Since April 27, 2015, Apache Parquet has been a top-level Apache Software Foundation (ASF)-sponsored project.
-
-
-
-
+> The open-source project to build Apache Parquet began as a joint effort between [Twitter](https://blog.x.com/engineering/en_us/a/2013/announcing-parquet-10-columnar-storage-for-hadoop) and Cloudera. Parquet was designed as an improvement on the Trevni columnar storage format created by Doug Cutting, the creator of Hadoop. The first version, Apache Parquet 1.0, was released in July 2013. Since April 27, 2015, Apache Parquet has been a top-level Apache Software Foundation (ASF)-sponsored project.^[[Wikipedia](https://en.wikipedia.org/wiki/Apache_Parquet)].
 
 ## Why should we care?
 
@@ -81,38 +77,36 @@ The key difference between a CSV and Parquet file format is how each one is orga
 
 ## Advantages of Parquet Columnar Storage – Why Should You Use It?
 
-The above characteristics of the Apache Parquet file format create several distinct benefits when it comes to storing and analysing large volumes of data. 
+The characteristics of the Apache Parquet file format create several distinct benefits when it comes to storing and analysing large volumes of data^[[Parquet file format guide](https://coralogix.com/blog/parquet-file-format/)].
 
 ::: {.panel-tabset}
 
 ### Compression
 
-File compression is the act of taking a file and making it smaller. In Parquet, compression is performed column by column and it is built to support flexible compression options and extendable encoding schemas per data type – e.g., different encoding can be used for compressing integer and string data.
+File compression is the act of taking a file and making it smaller. In Parquet, compression is performed column by column and it is built to support flexible compression options and extendible encoding schemas per data type – e.g., different encoding can be used for compressing integer and string data.
 
 Parquet data can be compressed using these encoding methods:
 
 * **Dictionary encoding:** this is enabled automatically and dynamically for data with a small number of unique values.
 * **Bit packing:** Storage of integers is usually done with dedicated 32 or 64 bits per integer. This allows more efficient storage of small integers.
 * **Run length encoding (RLE):** when the same value occurs multiple times, a single value is stored once along with the number of occurrences. Parquet implements a combined version of bit packing and RLE, in which the encoding switches based on which produces the best compression results.
+* Parquet file formats include metadata that provide information about the schema, compression settings, number of values, location of columns, minimum value, maximum value, number of row groups and type of encoding.
+* Embedded metadata helps in efficiently reading and processing the data. Any program that's used to read the data can also access the metadata to determine what type of data is expected to be found in a given column.
 
 <!--     Data compression -->
 
 <!-- Parquet file formats support various compression algorithms, such as Snappy, Gzip, and LZ4, resulting in smaller file sizes, compared to uncompressed formats like CSV. You can expect a size reduction of nearly 75% for your data in Parquet files from other formats. -->
 
-<!--     Embedded metadata -->
-
-<!-- Parquet file formats include metadata that provide information about the schema, compression settings, number of values, location of columns, minimum value, maximum value, number of row groups and type of encoding.  -->
-
-<!-- Embedded metadata helps in efficiently reading and processing the data. Any program that's used to read the data can also access the metadata to determine what type of data is expected to be found in a given column. -->
-
 ### Performance
 
-As opposed to row-based file formats like CSV, Parquet is optimized for performance. When running queries on your Parquet-based file-system, you can focus only on the relevant data very quickly. Moreover, the amount of data scanned will be way smaller and will result in less I/O usage. To understand this, let's look a bit deeper into how Parquet files are structured.
+When running queries on your Parquet-based file-system, you can focus only on the relevant data very quickly. Moreover, the amount of data scanned will be way smaller and will result in less I/O usage. To understand this, let's look a bit deeper into how Parquet files are structured.
 
 As we mentioned above, Parquet is a self-described format, so each file contains both data and metadata. Parquet files are composed of row groups, header and footer. Each row group contains data from the same columns. The same columns are stored together in each row group:
 
 ![](https://www.upsolver.com/wp-content/uploads/2020/05/Screen-Shot-2020-05-26-at-17.53.13.png)
 This structure is well-optimized both for fast query performance, as well as low I/O (minimizing the amount of data scanned). For example, if you have a table with 1000 columns, which you will usually only query using a small subset of columns. Using Parquet files will enable you to fetch only the required columns and their values, load those in memory and answer the query. If a row-based file format like CSV was used, the entire table would have to have been loaded in memory, resulting in increased I/O and worse performance.
+
+Parquet's columnar storage and efficient compression makes it well-suited for analytical queries that only need to access specific columns. This compression leads to faster query performance when dealing with large datasets. A recent [survey by Green Shield Canada](https://posit.co/blog/speed-up-data-analytics-with-parquet-files/){target="_blank"} found that with the parquet file format, they were able to process and query data 1,500 times faster than with CSVs.
 
 <!--     Splittable and parallel processing -->
 
@@ -131,7 +125,7 @@ This structure is well-optimized both for fast query performance, as well as low
 
 <!-- CSVs need you to read the entire file to query just one column, which is highly inefficient. -->
 
-<!-- On the other hand, Parquet's columnar storage and efficient compression makes it well-suited for analytical queries that only need to access specific columns. This compression leads to faster query performance when dealing with large datasets. A  recent [survey by Green Shield Canada](https://posit.co/blog/speed-up-data-analytics-with-parquet-files/){target="_blank"} found that with the parquet file format, they were able to process and query data 1,500 times faster than with CSVs.  -->
+
 
 ### Schema evolution
 
@@ -145,7 +139,7 @@ When using columnar file formats like Parquet, users can start with a simple sch
 
 :::
 
-## Column-Oriented vs Row-Based Storage for Analytic Querying
+## Column-Oriented vs Row-Based Storage for Analytic Querying^[[Parquet file format - everything you need to know](https://data-mozart.com/parquet-file-format-everything-you-need-to-know/)]
 
 Data is often generated and more easily conceptualized in rows. We are used to thinking in terms of Excel spreadsheets, where we can see all the data relevant to a specific record in one neat and organized row. However, for large-scale analytical querying, columnar storage comes with significant advantages with regards to cost and performance.
 
@@ -154,16 +148,33 @@ Complex data such as logs and event streams would need to be represented as a ta
 * Queries will take longer to run since more data needs to be scanned, rather than only querying the subset of columns we need to answer a query (which typically requires aggregating based on dimension or category)
 * Storage will be more costly since CSVs are not compressed as efficiently as Parquet
 
-Columnar formats provide better compression and improved performance out-of-the-box, and enable you to query data vertically – column by column. <!-- https://www.upsolver.com/blog/apache-parquet-why-use -->
+Columnar formats provide better compression and improved performance out-of-the-box, and enable you to query data vertically – column by column^[[Cases & Benefits](https://www.upsolver.com/blog/apache-parquet-why-use)].
 
-images columns row^[https://data-mozart.com/parquet-file-format-everything-you-need-to-know/]
+So, to answer the question: how many users from the USA bought T-Shirt, the engine has to do something like this:
+
+:::: {layout="[50, 50]" .column-page-inset}
+::: {#first-column}
+
+**Row oriented**
 ![](https://data-mozart.com/wp-content/uploads/2023/04/Row-store.png)
+
 ![](https://data-mozart.com/wp-content/uploads/2023/04/Row-based-scan.png)
+:::
+
+::: {#second-column align=center}
+
+**Column oriented**
+
 ![](https://data-mozart.com/wp-content/uploads/2023/04/Column-store.png)
 
 ![](https://data-mozart.com/wp-content/uploads/2023/04/Row-groups.png)
 
+
 ![](https://data-mozart.com/wp-content/uploads/2023/04/Scan-eliminate.png)
+
+:::
+::::
+
 Let’s quickly stop here, as I want you to realize the difference between various types of storage in terms of the work that needs to be performed by the engine:
 
     Row store – the engine needs to scan all 5 columns and all 6 rows
