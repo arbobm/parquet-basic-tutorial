@@ -20,6 +20,7 @@ format:
   pdf: 
     toc: true
     toc-depth: 3
+    biblio-title: 'References'
 # execute: 
   # warning: false
   # error: false
@@ -35,7 +36,6 @@ footnotes-hover: true
 # citation-location: margin
 csl: templates/cambridge-journal-of-economics.csl
 bibliography: templates/references.bib
-
 ---
 
 # Welcome to the fantastic world of Parquet
@@ -156,7 +156,7 @@ Columnar formats provide better compression and improved performance out-of-the-
 
 So, to answer the question: how many users from the USA bought T-Shirt, the engine has to do something like this:
 
-:::: {layout="[50, 50]" .column-page-inset}
+:::: {layout="[50, 50]"}
 ::: {#first-column}
 
 **Row oriented**
@@ -193,7 +193,7 @@ Ok, then let me introduce you to the R packages I've been exploring and how they
 
 [![](https://arrow.apache.org/img/arrow-logo_hex_black-txt_white-bg.png){fig-align="center" width=100}](https://arrow.apache.org/docs/r/){target="_blank"}
 
-The R `arrow` package provides access to many of the features of the Apache Arrow C++ library for R users. The goal of arrow is to provide an Arrow C++ back-end to `dplyr`, and access to the Arrow C++ library through familiar base R and tidyverse functions, or R6 classes. The dedicated R package website is located [here](https://arrow.apache.org/docs/r/index.html).
+The R `arrow` package [@r-arrow] provides access to many of the features of the Apache Arrow C++ library for R users. The goal of arrow is to provide an Arrow C++ back-end to `dplyr`, and access to the Arrow C++ library through familiar base R and tidyverse functions, or R6 classes. The dedicated R package website is located [here](https://arrow.apache.org/docs/r/index.html).
 
 ### What can the arrow package do?
 
@@ -389,7 +389,7 @@ You can try write parquet file parts grouping by two columns (e.g. month and yea
 
 ## [Geoparquet](https://geoparquet.org/) - `sfarrow` {#geoparquet}
 
-Yes, there is parquet file format for spatial data.
+Yes, there is parquet file format for spatial data [@r-sfarrow].
 
 ::: {.content-visible when-format="html"}
 
@@ -405,7 +405,7 @@ I'll just leave the link to the package here for now, but we can try and practic
 
 ## tidyverse - parquet
 
-There is a [tidyverse parquet package](https://www.tidyverse.org/blog/2025/01/nanoparquet-0-4-0/){target="_blank"} that I haven't tried yet, but they are usually really cool.
+There is a [tidyverse parquet package](https://www.tidyverse.org/blog/2025/01/nanoparquet-0-4-0/){target="_blank"} that I haven't tried yet, but they are usually really cool [@r-nanoparquet].
 
 
 
