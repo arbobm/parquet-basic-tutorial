@@ -13,6 +13,7 @@ format:
     theme: cosmo
     toc: true
     toc-expand: 3
+    toc-location: left
     canonical-url: true
     code-copy: true
     css: templates/style.css
@@ -23,20 +24,38 @@ format:
   # message: false
   # echo: false
 # bibliography: references.bib
-lightbox: # https://quarto.org/docs/output-formats/html-lightbox-figures.html
-  match: auto
-  effect: fade
-  desc-position: right
+# lightbox: # https://quarto.org/docs/output-formats/html-lightbox-figures.html
+#   match: auto
+#   effect: fade
+#   desc-position: right
 dpi: 500
+footnotes-hover: true
+# reference-location: margin
+# citation-location: margin
 ---
 
 # Welcome to the fantastic world of Parquet
 
+::: {.content-visible when-format="html"}
+
+![](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbTN5N2RseWl3MjkwNjRhOTM5Z2w5bTRoNDdoYnc3ZHJ2bjh6b3p1MCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/vhI6ftbRCasU3CbQAJ/giphy.gif){width=20% fig-align="center"}
+
+:::
+
+First time I've heard about parquet format was during doing a specialization in Data Science & Analytics last year, on the context of data so big I thought I would never have to deal with it. It turns out our occurrence points datasets and other geodatabases are becoming large enough they could benefit from those strategies.
+
+
 ## What is it?
 
-Apache Parquet is an open source, column-oriented data file format designed for efficient data storage and retrieval. It provides high performance compression and encoding schemes to handle complex data in bulk and is supported in many programming language and analytics tools^[https://parquet.apache.org/docs/overview/].
+![](https://www.jumpingrivers.com/blog/parquet-file-format-big-data-r/parquet-logo.png){width=50% fig-align="center"}
+
+Apache Parquet is an open source, column-oriented data file format designed for efficient data storage and retrieval. It provides high performance compression and encoding schemes to handle complex data in bulk and is supported in many programming language and analytics tools^[[All about Parquet - Overview](https://parquet.apache.org/docs/overview/)].
 
 > The open-source project to build Apache Parquet began as a joint effort between Twitter[3] and Cloudera.[4] Parquet was designed as an improvement on the Trevni columnar storage format created by Doug Cutting, the creator of Hadoop. The first version, Apache Parquet 1.0, was released in July 2013. Since April 27, 2015, Apache Parquet has been a top-level Apache Software Foundation (ASF)-sponsored project.
+
+
+
+
 
 ## Why should we care?
 
