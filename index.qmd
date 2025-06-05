@@ -42,10 +42,15 @@ footnotes-hover: true
 
 :::
 
-First time I've heard about parquet format was during doing a specialization in Data Science & Analytics last year, on the context of data so big I thought I would never have to deal with it. It turns out our occurrence points datasets and other geodatabases are becoming large enough they could benefit from those strategies.
+The first time I heard about the parquet format was during a specialisation in Data Science & Analytics last year, in the context of data so big that I thought I would never have to deal with it. Our occurrence points datasets, as well as other geodatabases, are becoming large enough that I think they could benefit from these strategies. In early May, I attended the ESRI UK Annual Conference, where they mentioned geoparquet during a talk on data management. I decided to give it a try. 
 
+To begin with, I started converting our eBird occurrence points for Australia (.csv) into parquet format. The CSV has 18 GB, while the Parquet is 3.5 GB. Besides, I can save the parquet in groups as useful as families, for example. When I want to read and analyse it, I don't need to read the entire file.
 
-## What is it?
+> I haven't tryied anything serious with [Geoparquet](#geoparquet) yet. Please let me know if you do :D
+
+Most of the text in this document was copied and pasted from various sources, which are cited as notes or references at the end. My goal is only to provide a first contact with it, not to write a super complete original tutorial. 
+
+## So, what is it?
 
 ![](https://www.jumpingrivers.com/blog/parquet-file-format-big-data-r/parquet-logo.png){width=50% fig-align="center"}
 
@@ -365,7 +370,7 @@ You can try write parquet file parts grouping by two columns (e.g. month and yea
 
 <!-- ``` -->
 
-## [Geoparquet](https://geoparquet.org/) - `sfarrow`
+## [Geoparquet](https://geoparquet.org/) - `sfarrow` {#geoparquet}
 
 Yes, there is parquet file format for spatial data.
 
