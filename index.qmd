@@ -20,7 +20,7 @@ format:
   pdf: 
     toc: true
     toc-depth: 3
-    biblio-title: 'References'
+    # biblio-title: 'References'
 # execute: 
   # warning: false
   # error: false
