@@ -46,9 +46,9 @@ bibliography: templates/references.bib
 
 :::
 
-The first time I heard about the parquet format was during a specialisation in Data Science & Analytics last year, in the context of data so big that I thought I would never have to deal with it. Our occurrence points datasets, as well as other geodatabases, are becoming large enough that I think they could benefit from these strategies. In early May, I attended the ESRI UK Annual Conference, where they mentioned geoparquet during a talk on data management. I decided to give it a try. 
+The first time I heard about the parquet format was during a specialisation in Data Science & Analytics last year, in the context of data so big that I thought I would never have to deal with it. Our occurrence points datasets, as well as other geodatabases, are becoming large enough that I think they could benefit from these strategies. In early May, I attended the [ESRI UK Annual Conference](https://www.esriuk.com/en-gb/about/events/ac/presentations/2025), where they mentioned geoparquet when talking about data management. I decided to give it a try. 
 
-To begin with, I started converting our eBird occurrence points for Australia (.csv) into parquet format. The CSV has 18 GB, while the Parquet is 3.5 GB. Besides, I can save the parquet in groups as useful as families, for example. When I want to read and analyse it, I don't need to read the entire file.
+To begin with, I started converting our eBird occurrence points for Australia (.csv) into parquet format. The CSV has 18 GB, while the Parquet is 3.5 GB. Besides, I can save the parquet in groups as useful as 'families', for example. When I want to read and analyse it, I don't need to read the entire file.
 
 > I haven't tryied anything serious with [Geoparquet](#geoparquet) yet. Please let me know if you do :D
 
@@ -401,6 +401,8 @@ I'll just leave the link to the package here for now, but we can try and practic
 
 [Getting started with amazing `sfarrow`](https://wcjochem.github.io/sfarrow/articles/example_sfarrow.html){target="_blank"}
 <!-- ### example from real life with range maps? -->
+
+[Here](https://developers.arcgis.com/geoanalytics/data/data-sources/geoparquet/){target='_blank'} is what I found on ESRI website so far.
 
 
 ## tidyverse - parquet
