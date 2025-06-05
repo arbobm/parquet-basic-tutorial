@@ -32,6 +32,7 @@ lightbox: # https://quarto.org/docs/output-formats/html-lightbox-figures.html
   desc-position: right
 dpi: 500
 footnotes-hover: true
+link-external-icon: true
 # reference-location: margin
 # citation-location: margin
 csl: templates/cambridge-journal-of-economics.csl
