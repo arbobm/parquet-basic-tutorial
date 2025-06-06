@@ -405,7 +405,9 @@ I'll just leave the link to the package here for now, but we can try and practic
 [Getting started with amazing `sfarrow`](https://wcjochem.github.io/sfarrow/articles/example_sfarrow.html){target="_blank"} [@r-sfarrow]
 <!-- ### example from real life with range maps? -->
 
-[Here](https://developers.arcgis.com/geoanalytics/data/data-sources/geoparquet/){target='_blank'} is what I found on ESRI website so far.
+<!-- [Here](https://developers.arcgis.com/geoanalytics/data/data-sources/geoparquet/){target='_blank'} is what I found on ESRI website so far. -->
+
+[[ArcGIS Blog] Enhancing support for Parquet files](https://www.esri.com/arcgis-blog/products/arcgis-pro/announcements/geoparquet-arcgis){target='_blank'}
 
 
 ## tidyverse - parquet
