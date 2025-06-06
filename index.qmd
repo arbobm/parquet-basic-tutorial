@@ -20,7 +20,7 @@ format:
   pdf: 
     toc: true
     toc-depth: 3
-    biblio-title: 'References'
+    # biblio-title: 'References'
 # execute: 
   # warning: false
   # error: false
@@ -195,6 +195,8 @@ Ok, then let me introduce you to the R packages I've been exploring and how they
 [![](https://arrow.apache.org/img/arrow-logo_hex_black-txt_white-bg.png){fig-align="center" width=100}](https://arrow.apache.org/docs/r/){target="_blank"}
 
 The R `arrow` package [@r-arrow] provides access to many of the features of the Apache Arrow C++ library for R users. The goal of arrow is to provide an Arrow C++ back-end to `dplyr`, and access to the Arrow C++ library through familiar base R and tidyverse functions, or R6 classes. The dedicated R package website is located [here](https://arrow.apache.org/docs/r/index.html).
+
+> That doesn't mean we need to know C++. It just means it is faster than packages that don't make use of C++ code for the same purpose. Think about [how `terra` is faster then `raster`](https://www.r-bloggers.com/2021/05/a-comparison-of-terra-and-raster-packages/){target="_blank"}, for instance.
 
 ### What can the arrow package do?
 
