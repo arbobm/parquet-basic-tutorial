@@ -390,7 +390,7 @@ You can try write parquet file parts grouping by two columns (e.g. month and yea
 
 ## [Geoparquet](https://geoparquet.org/) - `sfarrow` {#geoparquet}
 
-Yes, there is parquet file format for spatial data [@r-sfarrow].
+Yes, there is parquet file format for spatial data.
 
 ::: {.content-visible when-format="html"}
 
@@ -400,7 +400,7 @@ Yes, there is parquet file format for spatial data [@r-sfarrow].
 
 I'll just leave the link to the package here for now, but we can try and practice together with species range maps, for example :)
 
-[Getting started with amazing `sfarrow`](https://wcjochem.github.io/sfarrow/articles/example_sfarrow.html){target="_blank"}
+[Getting started with amazing `sfarrow`](https://wcjochem.github.io/sfarrow/articles/example_sfarrow.html){target="_blank"} [@r-sfarrow]
 <!-- ### example from real life with range maps? -->
 
 [Here](https://developers.arcgis.com/geoanalytics/data/data-sources/geoparquet/){target='_blank'} is what I found on ESRI website so far.
